@@ -3,6 +3,8 @@
 A modern **Python GUI application** built with [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) and [pymodbus](https://github.com/pymodbus-dev/pymodbus) to easily test, simulate, and debug Modbus TCP/IP communication.  
 This tool can act as both **Client** and **Server**, making it ideal for development, debugging, and educational use.
 
+![Image Alt](https://github.com/Pankaj-s-dev/Modbus_TCP_IP_Tester/blob/fcaf2dd390e9fccff165ccb1cd65ebfb9df35a90/images/server_running.png)
+
 ---
 
 ## 🧩 Features
@@ -25,13 +27,13 @@ This tool can act as both **Client** and **Server**, making it ideal for develop
 
 ## 🛠️ Installation
 
-### 1️⃣ Clone this repository
+### 1️ Clone this repository
 ```bash
 git clone https://github.com/Pankaj-s-dev/Modbus_TCP_IP_Tester.git
 cd Modbus_TCP_IP_Tester
 ```
 
-### 2️⃣ (Optional but recommended) Create a virtual environment
+### 2️ (Optional but recommended) Create a virtual environment
 ```bash
 python -m venv .venv
 # Activate the environment
@@ -41,7 +43,7 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3️⃣ Install dependencies
+### 3️ Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
@@ -52,7 +54,7 @@ customtkinter
 pymodbus
 ```
 
-### 4️⃣ Run the application
+### 4️ Run the application
 ```bash
 python Modbus_TCP_IP_Tester.py
 ```
@@ -114,13 +116,13 @@ Used to verify data transfer, connections, and internal actions.
 ## 📸  Screenshots
 
 
-| Section | Suggested image | Markdown Example |
-|----------|----------------|------------------|
-| Main Tab | `images/main_tab.png` | `![Main tab](images/main_tab.png)` |
-| Settings Tab | `images/settings_tab.png` | `![Settings tab](images/settings_tab.png)` |
-| Log Tab | `images/log_tab.png` | `![Log tab](images/log_tab.png)` |
-| Server Running | `images/server_running.png` | `![Server mode running](images/server_running.png)` |
-| Client Connected | `images/client_connected.png` | `![Client connected](images/client_connected.png)` |
+| Section |  Image |
+|----------|--------------------------------|
+| Main Tab |![Image Alt](https://github.com/Pankaj-s-dev/Modbus_TCP_IP_Tester/blob/fcaf2dd390e9fccff165ccb1cd65ebfb9df35a90/images/main_tab.png)|
+| Settings Tab |![Image Alt](https://github.com/Pankaj-s-dev/Modbus_TCP_IP_Tester/blob/fcaf2dd390e9fccff165ccb1cd65ebfb9df35a90/images/settings_tab.png)|
+| Log Tab |![Image Alt](https://github.com/Pankaj-s-dev/Modbus_TCP_IP_Tester/blob/fcaf2dd390e9fccff165ccb1cd65ebfb9df35a90/images/log_tab.png)|
+| Server Running | ![Image Alt](https://github.com/Pankaj-s-dev/Modbus_TCP_IP_Tester/blob/fcaf2dd390e9fccff165ccb1cd65ebfb9df35a90/images/server_running.png)|
+| Client Connected | ![Image Alt](https://github.com/Pankaj-s-dev/Modbus_TCP_IP_Tester/blob/fcaf2dd390e9fccff165ccb1cd65ebfb9df35a90/images/client_connected.png)|
 
 ---
 
@@ -193,8 +195,9 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 **Pankaj Sharma**  
 Embedded Systems & Automation Engineer  
-🌐 Open to collaboration and suggestions.  
-For feature discussions, please open an [Issue](../../issues) on GitHub.
+If you have questions, suggestions, or collaboration ideas:  
+- Connect on [LinkedIn](https://www.linkedin.com/in/pankaj-k-sharma/)  
+- Or open a discussion in the [Issues](../../issues) tab  
 
 ---
 
