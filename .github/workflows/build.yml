@@ -1,9 +1,10 @@
-name: Build EXE
+name: Build and Release EXE
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
+    tags:
+      - 'v*'       # Trigger on tags like v1.0.0, v2.3.1 etc.
+  workflow_dispatch:  # Allow manual run
 
 jobs:
   build:
@@ -11,10 +12,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -28,8 +29,40 @@ jobs:
       run: |
         pyinstaller --onefile --noconsole main.py
 
+    - name: Zip the EXE
+      run: |
+        powershell Compress-Archive -Path dist\*.exe -DestinationPath dist\modbus-tcp-gui-${{ github.ref_name }}.zip
+
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: app-exe
-        path: dist/*.exe
+        name: modbus-tcp-gui-${{ github.ref_name }}
+        path: dist\modbus-tcp-gui-${{ github.ref_name }}.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: modbus-tcp-gui-${{ github.ref_name }}
+        path: ./release
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        name: "Modbus TCP GUI ${{ github.ref_name }}"
+        tag_name: ${{ github.ref_name }}
+        body: |
+          🚀 Auto-generated release for version ${{ github.ref_name }}
+          Includes Windows EXE build.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Release Asset
+      uses: softprops/action-gh-release@v2
+      with:
+        files: ./release/*.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

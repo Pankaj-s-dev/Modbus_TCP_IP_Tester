@@ -10,6 +10,7 @@ import socket
 
 logging.basicConfig(level=logging.INFO)
 
+__version__ = "1.0.0"
 
 class ModbusTesterApp(ctk.CTk):
     def __init__(self):
