@@ -1,5 +1,6 @@
 name: 🏗️ Build and Release Modbus TCP/IP Tester
-
+permissions:
+  contents: write
 on:
   push:
     tags:
@@ -67,11 +68,11 @@ jobs:
             - Coils, Inputs, Registers support
             - Dark/Light themes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
 
       - name: 📤 Upload release asset
         uses: softprops/action-gh-release@v2
         with:
           files: ./release/*.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
