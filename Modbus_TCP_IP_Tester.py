@@ -16,7 +16,6 @@ class ModbusTesterApp(ctk.CTk):
         super().__init__()
         self.title("⚙️ Modbus TCP/IP Tester")
         self.geometry("1200x700")
-        # self.resizable(False, False)
         ctk.set_appearance_mode("light")
         ctk.set_default_color_theme("blue")
         
@@ -382,7 +381,6 @@ class ModbusTesterApp(ctk.CTk):
 
     def disable_or_enable_all_entries(self, in_state="disabled"):
         """Disable or enable all entry widgets stored in self.reg_entries."""
-        print(in_state)
         if in_state == "enable":
             in_state = "normal"
 
@@ -545,14 +543,12 @@ class ModbusTesterApp(ctk.CTk):
         try:
             for reg_type in self.reg_types:
                 if not self.watch_vars[reg_type].get():
-                    print(self.watch_vars[reg_type].get())
                     continue
                     
                 if reg_type == "Holding Registers":
                     rr = self.client.read_holding_registers(address=0, count=10)
                     if not rr.isError():
                         for i, val in enumerate(rr.registers):
-                            print(f"i : {i} || val {val}")
                             self.reg_entries[reg_type][i].delete(0, "end")
                             self.reg_entries[reg_type][i].insert(0, str(val))
 
@@ -565,8 +561,6 @@ class ModbusTesterApp(ctk.CTk):
 
                 if reg_type == "Coils":
                     rr = self.client.read_coils(address=0, count=10)
-                    print(len(rr.bits))
-                    print(rr.bits)
                     if not rr.isError():
                         bits = rr.bits[:10]
                         for i, val in enumerate(bits):
@@ -584,7 +578,6 @@ class ModbusTesterApp(ctk.CTk):
             self.log("Registers refreshed.")
 
         except Exception as e:
-            print("Error Occured")
             self.log(f"Error: {e}")
 
         # Auto refresh if interval > 0
@@ -603,7 +596,6 @@ class ModbusTesterApp(ctk.CTk):
 
                 values = [int(e.get()) for e in self.reg_entries[reg_type]]
                 if reg_type == "Holding Registers":
-                    print(f"Value : {values}")
                     self.client.write_registers(0, values)
                 elif reg_type == "Coils":
                     self.client.write_coils(0, [bool(v) for v in values])
@@ -634,7 +626,6 @@ class ModbusTesterApp(ctk.CTk):
             except Exception as e:
                 self.log(f"Error updating UI: {e}")
 
-        # Schedule next update in 1000ms (1 second)
         self.after((int(self.auto_interval*1000)), self._update_server_values_loop)
 
     def _switch_disable_check(self, reg_type_check):
