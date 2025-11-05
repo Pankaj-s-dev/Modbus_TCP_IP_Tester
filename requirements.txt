@@ -1,2 +1,2 @@
 pymodbus==3.9.2
-ustomtkinter==5.2.2
+customtkinter==5.2.2
