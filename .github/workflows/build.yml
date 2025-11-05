@@ -1,68 +1,77 @@
-name: Build and Release EXE
+name: 🏗️ Build and Release Modbus TCP/IP Tester
 
 on:
   push:
     tags:
-      - 'v*'       # Trigger on tags like v1.0.0, v2.3.1 etc.
-  workflow_dispatch:  # Allow manual run
+      - 'v*'          # Trigger on tags like v1.0.0, v2.3.1 etc.
+  workflow_dispatch:   # Allow manual run
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: 🧾 Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pyinstaller
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
 
-    - name: Build EXE
-      run: |
-        pyinstaller --onefile --noconsole main.py
+      - name: 🏗️ Build EXE using PyInstaller
+        run: |
+          pyinstaller --onefile --noconsole Modbus_TCP_IP_Tester.py --name "Modbus_TCP_IP_Tester"
 
-    - name: Zip the EXE
-      run: |
-        powershell Compress-Archive -Path dist\*.exe -DestinationPath dist\modbus-tcp-gui-${{ github.ref_name }}.zip
+      - name: 📚 List build output
+        run: dir dist
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: modbus-tcp-gui-${{ github.ref_name }}
-        path: dist\modbus-tcp-gui-${{ github.ref_name }}.zip
+      - name: 📦 Create ZIP archive
+        run: |
+          powershell Compress-Archive -Path dist\*.exe -DestinationPath dist\Modbus_TCP_IP_Tester-${{ github.ref_name }}.zip
+
+      - name: 📤 Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Modbus_TCP_IP_Tester-${{ github.ref_name }}
+          path: dist\Modbus_TCP_IP_Tester-${{ github.ref_name }}.zip
 
   release:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
-    - name: Download build artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: modbus-tcp-gui-${{ github.ref_name }}
-        path: ./release
+      - name: 📥 Download built artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Modbus_TCP_IP_Tester-${{ github.ref_name }}
+          path: ./release
 
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v2
-      with:
-        name: "Modbus TCP GUI ${{ github.ref_name }}"
-        tag_name: ${{ github.ref_name }}
-        body: |
-          🚀 Auto-generated release for version ${{ github.ref_name }}
-          Includes Windows EXE build.
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Modbus TCP/IP Tester ${{ github.ref_name }}"
+          tag_name: ${{ github.ref_name }}
+          body: |
+            🧰 Auto-generated release for version ${{ github.ref_name }}  
+            Includes Windows executable build of **Modbus TCP/IP Tester**.
+            ### Features:
+            - Run as Client or Server
+            - CustomTkinter GUI
+            - Coils, Inputs, Registers support
+            - Dark/Light themes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload Release Asset
-      uses: softprops/action-gh-release@v2
-      with:
-        files: ./release/*.zip
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 📤 Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./release/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
