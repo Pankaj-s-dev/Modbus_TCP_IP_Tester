@@ -3,7 +3,7 @@ name: 🏗️ Build and Release Modbus TCP/IP Tester
 on:
   push:
     tags:
-      - 'v*'          # Trigger on tags like v1.0.0, v2.3.1 etc.
+      - 'v*'          
   workflow_dispatch:   # Allow manual run
 
 jobs:
