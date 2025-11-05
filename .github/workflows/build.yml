@@ -5,7 +5,7 @@ on:
   push:
     tags:
       - 'v*'          
-  workflow_dispatch:   # Allow manual run
+  workflow_dispatch:   # Allow manual run...
 
 jobs:
   build:
