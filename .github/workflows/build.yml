@@ -1,3 +1,52 @@
+name: 🏗️ Build and Release Modbus TCP/IP Tester
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: 🧾 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: 🏗️ Build EXE using PyInstaller
+        run: |
+          pyinstaller --onefile --noconsole Modbus_TCP_IP_Tester.py --name "Modbus_TCP_IP_Tester"
+
+      - name: 📚 List build output
+        run: dir dist
+
+      - name: 📦 Create ZIP archive
+        run: |
+          powershell Compress-Archive -Path dist\*.exe -DestinationPath dist\Modbus_TCP_IP_Tester-${{ github.ref_name }}.zip
+
+      - name: 📤 Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Modbus_TCP_IP_Tester-${{ github.ref_name }}
+          path: dist\Modbus_TCP_IP_Tester-${{ github.ref_name }}.zip
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -21,6 +70,7 @@
           body: |
             🧰 Auto-generated release for version **${{ env.TAG_NAME }}**
             Includes Windows executable build of **Modbus TCP/IP Tester**.
+
             ### Features:
             - Run as Client or Server
             - CustomTkinter GUI
